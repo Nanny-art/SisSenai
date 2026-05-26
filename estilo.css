@@ -12,7 +12,7 @@ table {width: 100%; border-collapse: collapse; margin-top: 1rem;}
 th,td [border-bottom: 1px solid #ddd; padding; 10px; text-align;left;}
 
 .banner{
-  background: linear-gradient(rgba(0,85,153,0.8), rgba90,85,153,0.8)), url('imagens\senai.png');
+  background: linear-gradient(rgba(0,85,153,0.8), rgba(0,85,153,0.8)), url('imagens\senai.png');
   background-size: cover;
   color: white;
   padding; 30px 20px;
