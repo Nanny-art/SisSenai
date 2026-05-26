@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="estilo.css">
+    <title>SisSenai - Cadastro de Clientes</title>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html">Home</a>a>
+      <a href+"clientes.html">Clientes</a>>
+      <a href="produtos.html">Produtos</a>
+      <a href="vendas.html">Vendas</a>
+                 <a href="consulta_vendas.html">Consulta Vendas</a>
+  
+    </nav>
+    <header class="banner">
+      <h1>Gestão de Clientes</h1>
+      <p>Cadastre e gerencie sua base de contatos</p>
+    </header>
+
+    <div class="container">
+      <div class="card">
+        <h2>Novo Cadastro</h2>
+        <form action="/salvar-cliente" method="POST">
+          <input type="text" name="nome" placeholder="Nome do Cliente" required>
+          <input type="text" name="cpf" placeholder="CPF/CNPJ" required>
+          <input typt="tel' name= "telefone" placeholder="Telefone" required>
+          <button type="submit">Salvar Cliente</button>
+        </form>
+      </div>
+
+      <div class="card" style="margin-top: 20 px;">
+        <h2>Clientes Cadastrados</h2>
+        <table>
+          <thead>
+          <tr>
+            <th>Nome</th>
+            <th>CPF/CNPJ</th>
+            <th>Telefone</th>
+            </tr>
+          </thead>
+          <tbody id="lista-clientes">
+          </tbody>
+          </table>
+      </div>
+    </div>
+
+    <script>
+      fetch('/listar-clientes')
+      .then(res=>res.jon())
+      .then9clientes=>{
+      cont corpoTabela = document.getElementByld('lista-clientes');
+        clientes.forEach(c=>{
+          corpoTabela.innerHTML+=`
+          <tr>
+          <td>${c.nome}</td>
+          <td>${c.cpf}</td>
+          <td>${c.telefone}</td>
+          </tr>`;
+        });
+      });
+    </script>
+  </body>
+  <footer class="rodape">
+    <div class="container-rodape">
+    <p>&copy; 2026 SisSenai - Sistema de Gestão Educacional</p>
+    <p>Desenvolvido para fins didáticos - Unidade SENAI Capanema/PR</p>
+    </div>
+  </footer>
+</html>
+          
+
+          
+    </script>
+        
+  </body>
