@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="estilo.css">
+    <title>SisSenai - Consulta de Vendas</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="vendas.html">Vendas</a>
+        <a href="consulta_vendas.html">Consulta Vendas</a>
+    </nav>
+
+    <header class="banner">
+        <h1>Consulta de Vendas</h1>
+        <p>Clique em uma venda para detalhar os itens comprados</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>Histórico de Vendas (Mestre)</h2>
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>Data</th><th>Cliente</th><th>Total</th><th>Ação</th></tr>
+                </thead>
+                <tbody id="lista-vendas-consulta"></tbody>
+            </table>
+        </div>
+
+        <div id="card-detalhes" class="card" style="margin-top: 20px; display: none; border-top: 5px solid #005599;">
+            <h2>Detalhes da Venda #<span id="num-venda"></span> (Itens)</h2>
+            <table>
+                <thead>
+                    <tr><th>Produto</th><th>Qtd</th><th>Preço Unit.</th><th>Subtotal</th></tr>
+                </thead>
+                <tbody id="lista-itens-detalhe"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            fetch('/listar-vendas').then(res => res.json()).then(vendas => {
+                const corpo = document.getElementById('lista-vendas-consulta');
+                vendas.forEach(v => {
+                    corpo.innerHTML += `
+                            <tr>
+                                <td>${v.id}</td>
+                                <td>${v.data}</td>
+                                <td>${v.nome_cliente}</td>
+                                <td>R$ ${v.total.toFixed(2)}</td>
+                                <td><button onclick="verDetalhes(${v.id})" style="padding:5px">Ver Itens</button></td>
+                            </tr>`;
+                });
+            });
+        };
+
+        function verDetalhes(idVenda) {
+            fetch(`/detalhes-venda/${idVenda}`).then(res => res.json()).then(itens => {
+                document.getElementById('card-detalhes').style.display = 'block';
+                document.getElementById('num-venda').innerText = idVenda;
+                const corpo = document.getElementById('lista-itens-detalhe');
+                corpo.innerHTML = "";
+                itens.forEach(item => {
+                    corpo.innerHTML += `
+                            <tr>
+                                <td>${item.descricao}</td>
+                                <td>${item.quantidade}</td>
+                                <td>R$ ${item.preco_unitario.toFixed(2)}</td>
+                                <td>R$ ${(item.quantidade * item.preco_unitario).toFixed(2)}</td>
+                            </tr>`;
+                });
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+        }
+    </script>
+</body>
+<footer class="rodape">
+    <div class="container-rodape">
+        <p>&copy; 2026 SisSenai - Sistema de Gestão Educacional</p>
+        <p>Desenvolvido para fins didáticos - Unidade SENAI Capanema/PR</p>
+    </div>
+</footer>
+</html>
