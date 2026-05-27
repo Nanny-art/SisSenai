@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="estilo.css">
+    <title>SisSenai - Lançar Venda</title>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="vendas.html">Vendas</a>
+        <a href="consulta_vendas.html">Consulta Vendas</a>
+    </nav>
+
+    <header class="banner">
+        <h1>Controle de Vendas</h1>
+        <p>Cadastre novas vendas no sistema</p>
+    </header>
+
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <button onclick="window.location.href='consulta_vendas.html'" style="background: #555; width: auto; padding: 10px 20px;">
+                🔍 Ver Histórico e Detalhes de Vendas
+            </button>
+        </div>
+
+        <div class="card">
+            <h2>Nova Venda / Orçamento</h2>
+
+            <label>Cliente:</label>
+            <select id="selCliente">
+                <option value="">Selecione o Cliente...</option>
+            </select>
+
+            <label>Produto:</label>
+            <select id="selProduto">
+                <option value="">Selecione o Produto...</option>
+            </select>
+
+            <label>Quantidade:</label>
+            <input type="number" id="inpQtd" value="1" min="1">
+
+            <button onclick="adicionarItem()">Adicionar Item</button>
+
+            <table id="tabelaItens">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Qtd</th>
+                        <th>Preço Unit.</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <h3 id="txtTotal">Total: R$ 0,00</h3>
+            <button onclick="finalizarVenda()" style="background: green;">Finalizar Venda</button>
+        </div>
+    </div>
+
+    <script>
+        let carrinho = [];
+        let totalGeral = 0;
+        window.listaProdutos = [];
+
+        window.onload = () => {
+            fetch('/listar-clientes').then(res => res.json()).then(data => {
+                const selC = document.getElementById('selCliente');
+                data.forEach(c => selC.innerHTML += `<option value="${c.id}">${c.nome}</option>`);
+            });
+
+            fetch('/listar-produtos').then(res => res.json()).then(data => {
+                window.listaProdutos = data;
+                const selP = document.getElementById('selProduto');
+                data.forEach(p => selP.innerHTML += `<option value="${p.id}">${p.descricao} - R$ ${p.preco.toFixed(2)}</option>`);
+            });
+        };
+
+        function adicionarItem() {
+            const pId = parseInt(document.getElementById('selProduto').value);
+            const qtd = parseInt(document.getElementById('inpQtd').value);
+            const produto = window.listaProdutos.find(p => p.id === pId);
+
+            if (produto) {
+                const subtotal = produto.preco * qtd;
+                carrinho.push({ id: produto.id, desc: produto.descricao, preco: produto.preco, qtd: qtd });
+                totalGeral += subtotal;
+                atualizarGrade();
+            } else {
+                alert("Selecione um produto!");
+            }
+        }
+
+        function atualizarGrade() {
+            const corpo = document.querySelector('#tabelaItens tbody');
+            corpo.innerHTML = "";
+            carrinho.forEach(item => {
+                corpo.innerHTML += `<tr><td>${item.desc}</td><td>${item.qtd}</td><td>R$ ${item.preco.toFixed(2)}</td><td>R$ ${(item.qtd * item.preco).toFixed(2)}</td></tr>`;
+            });
+            document.getElementById('txtTotal').innerText = `Total: R$ ${totalGeral.toFixed(2)}`;
+        }
+
+        function finalizarVenda() {
+            const cId = document.getElementById('selCliente').value;
+            if (!cId || carrinho.length === 0) return alert("Selecione cliente e itens!");
+
+            const dadosVenda = { cliente_id: cId, total: totalGeral, itens: carrinho };
+
+            fetch('/finalizar-venda', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosVenda)
+            })
+                .then(res => res.json())
+                .then(resposta => {
+                    if (resposta.success) {
+                        alert('Venda registrada com sucesso!');
+                        window.location.href = 'consulta_vendas.html'; // Vai direto para a consulta após vender
+                    }
+                });
+        }
+    </script>
+</body>
+<footer class="rodape">
+    <div class="container-rodape">
+        <p>&copy; 2026 SisSenai - Sistema de Gestão Educacional</p>
+        <p>Desenvolvido para fins didáticos - Unidade SENAI Capanema/PR</p>
+    </div>
+</footer>
+</html>
