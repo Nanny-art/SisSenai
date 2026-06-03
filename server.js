@@ -40,7 +40,7 @@ db.serialize(() => {
 //Iniciar Servidor
 const PORT = 3000;
 app.listen(PORT,()=>{
-  console.log(`======================================`);
+  console.log(`=========================================`);
   console.log(´SISSENAI RODANDO EM: http://localhost:${Port}`);
-  console.log(`======================================`);
+  console.log(`=========================================`);
 });
