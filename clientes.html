@@ -48,10 +48,12 @@
     </div>
 
     <script>
+      function carregarClientes(){
       fetch('/listar-clientes')
       .then(res=>res.jon())
       .then9clientes=>{
       cont corpoTabela = document.getElementByld('lista-clientes');
+        corpoTabela.innerHTML=";
         clientes.forEach(c=>{
           corpoTabela.innerHTML+=`
           <tr>
