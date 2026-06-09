@@ -84,3 +84,52 @@
     </script>
         
   </body>
+//Lógica para Salvar (Novo ou Edição)| Acrescentar tudo
+document.getElementByld('form-cliente').onsubmit=function(e){
+e.preventDefault();
+const id+this.dataset.id;//Verifica se há um ID guardado para edição
+const dados={
+nome: this.nome.value,
+cpf: this.cpf.value,
+telefone: this.telefone.value
+};
+
+const url = id ?`alterar-cliente/${id}`:'/salvar-clientes';
+const metodo = id ? 'PUT':'POST';
+
+fetch(url,{
+method; metodo,
+headers: {'Content-Type':'application/json'},
+body:JSON.stringify(dados)
+}).then(()=>{
+alert(id ? "Cliente alterado!": "Cliente salvo!");
+location.reload();
+});
+};
+
+//Função para Excluir | Acrescentar tudo
+function excluirCliente(id){
+if(confirm("Deseja excluir este cliente?")){
+   fetch(`/excluir-cliente/${id}`,{method: 'DELETE})
+     .then(()=>carregarClientes());
+}
+}
+
+//Função para colocar dados no form para Editar | Acrescentar tudo
+function prepararEdicao(id,nome,cpf,telefone){
+   const form = document.getElementByld('form-cliente');
+   form.dataset.id= id; //Guarda o ID no formulário
+   form.nome.value= nomme;
+  form.cpf.value = cpf;
+   form.telefone.value= telefone;
+
+document.getElementByld('titulo-form').innerText= "Editar Cadastro";
+const btn = document.getElementByld('btn-salvar');
+btn,innerText = "Confirmar Alteração";
+btn.style.background = "orange";
+}
+
+carregarClientes();
+</script>
+
+
