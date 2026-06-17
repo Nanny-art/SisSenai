@@ -1,77 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
+<head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="estilo.css">
     <title>SisSenai - Cadastro de Produtos</title>
-  </head>
-  <body>
+</head>
+<body>
     <nav>
-      <a href="index.html">Home</a>a>
-      <a href+"clientes.html">Clientes</a>>
-      <a href="produtos.html">Produtos</a>
-      <a href="vendas.html">Vendas</a>
-                 <a href="consulta_vendas.html">Consulta Vendas</a>
-  
+        <a href="index.html">Home</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="produtos.html">Estoque</a>
+        <a href="vendas.html">Vendas</a>
     </nav>
+
     <header class="banner">
-      <h1>Gestão de Produtos</h1>
-      <p>Cadastre e gerencie seus produtos de estoque</p>
+        <h1>Gestão de Produtos</h1>
+        <p>Cadastre e gerencie seus produtos do estoque</p>
     </header>
 
     <div class="container">
-      <div class="card">
-        <h2>Novo Cadastro</h2>
-        <form action="/salvar-cliente" method="POST">
-          <input type="text" name="nome" placeholder="Nome do Cliente" required>
-          <input type="text" name="cpf" placeholder="CPF/CNPJ" required>
-          <input typt="tel' name= "telefone" placeholder="Telefone" required>
-          <button type="submit">Salvar Cliente</button>
-        </form>
-      </div>
+        <div class="card">
+            <h2>Novo Produto</h2>
+            <form action="/salvar-produto" method="POST">
+                <input type="text" name="descricao" placeholder="Descrição do Produto" required>
+                <input type="number" step="0.01" name="preco" placeholder="Preço de Venda" required>
+                <input type="number" name="estoque" placeholder="Quantidade em Estoque" required>
+                <button type="submit">Salvar no Estoque</button>
+            </form>
+        </div>
 
-      <div class="card" style="margin-top: 20 px;">
-        <h2>Clientes Cadastrados</h2>
-        <table>
-          <thead>
-          <tr>
-            <th>Nome</th>
-            <th>CPF/CNPJ</th>
-            <th>Telefone</th>
-            </tr>
-          </thead>
-          <tbody id="lista-clientes">
-          </tbody>
-          </table>
-      </div>
+        <div class="card" style="margin-top: 20px;">
+            <h2>Produtos no Estoque</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Preço (R$)</th>
+                        <th>Estoque</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-produtos">
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-      fetch('/listar-clientes')
-      .then(res=>res.jon())
-      .then9clientes=>{
-      cont corpoTabela = document.getElementByld('lista-clientes');
-        clientes.forEach(c=>{
-          corpoTabela.innerHTML+=`
-          <tr>
-          <td>${c.nome}</td>
-          <td>${c.cpf}</td>
-          <td>${c.telefone}</td>
-          </tr>`;
-        });
-      });
+        fetch('/listar-produtos')
+            .then(res => res.json())
+            .then(produtos => {
+                const corpoTabela = document.getElementById('lista-produtos');
+                produtos.forEach(p => {
+                    corpoTabela.innerHTML += `
+                        <tr>
+                            <td>${p.descricao}</td>
+                            <td>${p.preco.toFixed(2)}</td>
+                            <td>${p.estoque}</td>
+                        </tr>`;
+                });
+            });
     </script>
-  </body>
-  <footer class="rodape">
+</body>
+<footer class="rodape">
     <div class="container-rodape">
-    <p>&copy; 2026 SisSenai - Sistema de Gestão Educacional</p>
-    <p>Desenvolvido para fins didáticos - Unidade SENAI Capanema/PR</p>
+        <p>&copy; 2026 SisSenai - Sistema de Gestão Educacional</p>
+        <p>Desenvolvido para fins didáticos - Unidade SENAI Capanema/PR</p>
     </div>
-  </footer>
+</footer>
 </html>
-          
-
-          
-    </script>
-        
-  </body>
