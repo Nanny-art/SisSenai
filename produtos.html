@@ -61,12 +61,7 @@
             });
     </script>
 
-//Função para Excluir | Acrescentar tudo
-function excluirCliente(id){
-if(confirm("Deseja excluir este cliente?")){
-   fetch(`/excluir-cliente/${id}`,{method: 'DELETE})
-     .then(()=>carregarClientes());
-}
+
 </body>
 <footer class="rodape">
     <div class="container-rodape">
